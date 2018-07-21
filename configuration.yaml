@@ -1,1 +1,144 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 33.000
+  longitude: -84.000
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+  # Customization file
+  customize: !include customize.yaml
 
+# Show links to resources in log and frontend
+introduction:
+
+# Enables the frontend
+frontend:
+  extra_html_url:
+    - /local/www/custom_ui/state-card-floorplan.html
+    - /local/www/custom_ui/state-card-custom-ui.html
+  extra_html_url_es5:
+    - /local/www/custom_ui/state-card-custom-ui-es5.html
+
+feedreader:
+  urls:
+    - https://www.reddit.com/r/ATL+AncientAliens+Atlanta+AtlantaEats.rss
+    - https://www.reddit.com/r/Atlanta.rss
+
+august:
+  login_method: phone
+  username: 'username'
+  password: 'password'
+
+switch:
+  - platform: tplink
+    host: 10.0.0.142
+    name: 'String Lights'
+  - platform: tplink
+    host: 10.0.0.196
+    name: 'Star Lamp'
+
+media_player:
+  - platform: kodi
+    host: 10.0.0.171
+
+binary_sensor:
+  - platform: mqtt
+    state_topic: dummy/floorplan/sensor
+    name: Floorplan
+
+emulated_hue:
+
+weblink:
+  entities:
+    - name: Router (Admin)
+      url: http://10.0.0.1
+      icon: mdi:router-wireless
+    - name: HomeAssistant.io
+      url: https://www.home-assistant.io
+
+# Customize your frontend
+panel_iframe:
+  configurator:
+    title: YAML Editor
+    icon: mdi:wrench
+    url: http://10.0.0.244:3218
+  controlpanel:
+    title: Control Panel
+    icon: mdi:view-quilt
+    url: http://10.0.0.244:7080
+  lovelace:
+    title: Lovelace UI
+    icon: mdi:heart
+    url: http://10.0.0.244:8123/lovelace
+
+panel_custom:
+  - name: floorplan
+    sidebar_title: Floorplan
+    sidebar_icon: mdi:home
+    url_path: floorplan
+    config: !include floorplan.yaml
+
+# Enables configuration UI
+config:
+  title: Settings
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: <password>
+  base_url: baseurl.duckdns.org:8123
+  cors_allowed_origins:
+    - https://10.0.0.244:7080
+    - http://10.0.0.244:7080
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  include_used_components: true
+
+vacuum:
+  - platform: roomba
+    host: 10.0.0.209
+    username: <username>
+    password: <password>
+    
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
